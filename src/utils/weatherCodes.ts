@@ -1,42 +1,62 @@
-export function getWeatherDescription(code: number): string {
-  const codes: Record<number, string> = {
-    0: 'Clear sky',
-    1: 'Mainly clear',
-    2: 'Partly cloudy',
-    3: 'Overcast',
-    45: 'Foggy',
-    48: 'Icy fog',
-    51: 'Light drizzle',
-    53: 'Moderate drizzle',
-    55: 'Dense drizzle',
-    61: 'Slight rain',
-    63: 'Moderate rain',
-    65: 'Heavy rain',
-    71: 'Slight snow',
-    73: 'Moderate snow',
-    75: 'Heavy snow',
-    77: 'Snow grains',
-    80: 'Slight showers',
-    81: 'Moderate showers',
-    82: 'Violent showers',
-    85: 'Snow showers',
-    86: 'Heavy snow showers',
-    95: 'Thunderstorm',
-    96: 'Thunderstorm with hail',
-    99: 'Thunderstorm with heavy hail',
+export function getWeatherDescription(symbol: string): string {
+  const base = symbol.replace(/_day|_night|_polartwilight/g, '');
+  const codes: Record<string, string> = {
+    clearsky: 'Clear sky',
+    fair: 'Fair',
+    partlycloudy: 'Partly cloudy',
+    cloudy: 'Cloudy',
+    fog: 'Fog',
+    lightrain: 'Light rain',
+    rain: 'Rain',
+    heavyrain: 'Heavy rain',
+    lightrainshowers: 'Light rain showers',
+    rainshowers: 'Rain showers',
+    heavyrainshowers: 'Heavy rain showers',
+    lightsleet: 'Light sleet',
+    sleet: 'Sleet',
+    heavysleet: 'Heavy sleet',
+    lightsleetshowers: 'Light sleet showers',
+    sleetshowers: 'Sleet showers',
+    heavysleetshowers: 'Heavy sleet showers',
+    lightsnow: 'Light snow',
+    snow: 'Snow',
+    heavysnow: 'Heavy snow',
+    lightsnowshowers: 'Light snow showers',
+    snowshowers: 'Snow showers',
+    heavysnowshowers: 'Heavy snow showers',
+    lightrainandthunder: 'Light rain and thunder',
+    rainandthunder: 'Rain and thunder',
+    heavyrainandthunder: 'Heavy rain and thunder',
+    lightrainshowersandthunder: 'Light rain showers and thunder',
+    rainshowersandthunder: 'Rain showers and thunder',
+    heavyrainshowersandthunder: 'Heavy rain showers and thunder',
+    lightsleetandthunder: 'Light sleet and thunder',
+    sleetandthunder: 'Sleet and thunder',
+    heavysleetandthunder: 'Heavy sleet and thunder',
+    lightsleetshowersandthunder: 'Light sleet showers and thunder',
+    sleetshowersandthunder: 'Sleet showers and thunder',
+    heavysleetshowersandthunder: 'Heavy sleet showers and thunder',
+    lightsnowandthunder: 'Light snow and thunder',
+    snowandthunder: 'Snow and thunder',
+    heavysnowandthunder: 'Heavy snow and thunder',
+    lightsnowshowersandthunder: 'Light snow showers and thunder',
+    snowshowersandthunder: 'Snow showers and thunder',
+    heavysnowshowersandthunder: 'Heavy snow showers and thunder',
   };
-  return codes[code] ?? 'Unknown';
+  return codes[base] ?? 'Unknown';
 }
 
-export function getWeatherEmoji(code: number): string {
-  if (code === 0) return '☀️';
-  if (code <= 2) return '🌤️';
-  if (code === 3) return '☁️';
-  if (code <= 48) return '🌫️';
-  if (code <= 55) return '🌧️';
-  if (code <= 65) return '🌧️';
-  if (code <= 77) return '❄️';
-  if (code <= 82) return '🌦️';
-  if (code <= 86) return '🌨️';
-  return '⛈️';
+export function getWeatherEmoji(symbol: string): string {
+  const base = symbol.replace(/_day|_night|_polartwilight/g, '');
+  if (base === 'clearsky') return '☀️';
+  if (base === 'fair') return '🌤️';
+  if (base === 'partlycloudy') return '⛅';
+  if (base === 'cloudy') return '☁️';
+  if (base === 'fog') return '🌫️';
+  if (base.includes('thunder')) return '⛈️';
+  if (base.includes('snow')) return '❄️';
+  if (base.includes('sleet')) return '🌨️';
+  if (base.includes('shower')) return '🌦️';
+  if (base.includes('rain')) return '🌧️';
+  return '☁️';
 }

@@ -131,7 +131,13 @@ function HomePage() {
               value={placeQuery}
               onChange={(val) => {
                 setPlaceQuery(val)
-                if (val !== placeQuery) setSelectedPlace(null)
+                const matchesCurrent =
+                  selectedPlace &&
+                  val ===
+                    selectedPlace.name +
+                      (selectedPlace.admin1 ? `, ${selectedPlace.admin1}` : '') +
+                      `, ${selectedPlace.country}`
+                if (!matchesCurrent) setSelectedPlace(null)
               }}
               onOptionSubmit={handlePlaceSelect}
               data={autocompleteData}
@@ -149,8 +155,8 @@ function HomePage() {
               value={eventTime}
               onChange={setEventTime}
               minDate={new Date()}
-              maxDate={dayjs().add(16, 'day').toDate()}
-              description="Open-Meteo provides forecasts up to 16 days ahead"
+              maxDate={dayjs().add(9, 'day').toDate()}
+              description="met.no provides forecasts up to 9 days ahead"
             />
 
             <TextInput

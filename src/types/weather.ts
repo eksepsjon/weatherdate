@@ -13,23 +13,48 @@ export interface GeocodingResponse {
   results?: GeocodingResult[];
 }
 
-export interface WeatherHourly {
-  time: string[];
-  temperature_2m: number[];
-  precipitation_probability: number[];
-  weathercode: number[];
-  windspeed_10m: number[];
-  apparent_temperature: number[];
+export interface MetNoInstantDetails {
+  air_temperature: number;
+  wind_speed: number;
+  wind_from_direction: number;
+  relative_humidity: number;
+  air_pressure_at_sea_level: number;
+  cloud_area_fraction: number;
 }
 
-export interface WeatherResponse {
-  latitude: number;
-  longitude: number;
-  timezone: string;
-  hourly: WeatherHourly;
-  hourly_units: {
-    temperature_2m: string;
-    windspeed_10m: string;
+export interface MetNoTimePeriod {
+  summary: {
+    symbol_code: string;
+  };
+  details: {
+    precipitation_amount: number;
+  };
+}
+
+export interface MetNoTimeseries {
+  time: string;
+  data: {
+    instant: {
+      details: MetNoInstantDetails;
+    };
+    next_1_hours?: MetNoTimePeriod;
+    next_6_hours?: MetNoTimePeriod;
+    next_12_hours?: MetNoTimePeriod;
+  };
+}
+
+export interface MetNoResponse {
+  type: string;
+  geometry: {
+    type: string;
+    coordinates: number[];
+  };
+  properties: {
+    meta: {
+      updated_at: string;
+      units: Record<string, string>;
+    };
+    timeseries: MetNoTimeseries[];
   };
 }
 
@@ -37,11 +62,11 @@ export interface WeatherSnapshot {
   time: string;
   temperature: number;
   apparentTemperature: number;
-  precipitationProbability: number;
-  weatherCode: number;
-  windspeed: number;
+  precipitationAmount: number;
+  weatherSymbol: string;
+  windSpeed: number;
   temperatureUnit: string;
-  windspeedUnit: string;
+  windSpeedUnit: string;
 }
 
 export interface Bookmark {

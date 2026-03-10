@@ -141,7 +141,7 @@ function WeatherPage() {
                 {error instanceof Error ? error.message : 'An error occurred while fetching weather data.'}
               </Text>
               <Text size="sm" c="dimmed">
-                Note: Open-Meteo only provides forecasts for the next 16 days and historical data is limited.
+                Note: met.no provides forecasts for up to 9 days ahead.
                 Please check your date is within range.
               </Text>
             </Stack>
@@ -153,7 +153,7 @@ function WeatherPage() {
             <Paper shadow="sm" p="xl" radius="md" withBorder>
               <Stack gap="md" align="center">
                 <Text fz={72} lh={1}>
-                  {getWeatherEmoji(data.weatherCode)}
+                  {getWeatherEmoji(data.weatherSymbol)}
                 </Text>
                 <Stack gap={4} align="center">
                   <Title order={1}>
@@ -163,7 +163,7 @@ function WeatherPage() {
                     Feels like {data.apparentTemperature.toFixed(1)}{data.temperatureUnit}
                   </Text>
                   <Badge size="xl" variant="light" mt="xs">
-                    {getWeatherDescription(data.weatherCode)}
+                    {getWeatherDescription(data.weatherSymbol)}
                   </Badge>
                 </Stack>
               </Stack>
@@ -173,9 +173,9 @@ function WeatherPage() {
               <Card withBorder radius="md" padding="md">
                 <Stack gap={4} align="center">
                   <Text fz={32}>💧</Text>
-                  <Title order={4}>{data.precipitationProbability}%</Title>
+                  <Title order={4}>{data.precipitationAmount} mm</Title>
                   <Text size="sm" c="dimmed">
-                    Rain probability
+                    Precipitation
                   </Text>
                 </Stack>
               </Card>
@@ -183,7 +183,7 @@ function WeatherPage() {
                 <Stack gap={4} align="center">
                   <Text fz={32}>💨</Text>
                   <Title order={4}>
-                    {data.windspeed.toFixed(0)} {data.windspeedUnit}
+                    {data.windSpeed.toFixed(1)} {data.windSpeedUnit}
                   </Title>
                   <Text size="sm" c="dimmed">
                     Wind speed
@@ -213,13 +213,13 @@ function WeatherPage() {
                 <Text size="xs" c="dimmed" mt="xs">
                   Data from{' '}
                   <a
-                    href="https://open-meteo.com/"
+                    href="https://www.met.no/"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Open-Meteo
+                    met.no
                   </a>{' '}
-                  · Updated every 15 minutes
+                  · Norwegian Meteorological Institute
                 </Text>
               </Stack>
             </Paper>

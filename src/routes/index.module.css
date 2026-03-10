@@ -1,0 +1,240 @@
+.container {
+  max-width: 600px;
+  margin: 2rem auto 0;
+  padding: 0 16px;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.heroSection {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.heroTitle {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.heroSubtitle {
+  color: #868e96;
+  font-size: 1.125rem;
+  margin: 0;
+}
+
+.paper {
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  background: #fff;
+}
+
+.formStack {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.label {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.input:focus {
+  border-color: #228be6;
+  box-shadow: 0 0 0 2px rgba(34, 139, 230, 0.2);
+}
+
+.description {
+  font-size: 0.75rem;
+  color: #868e96;
+  margin: 0;
+}
+
+.autocompleteWrapper {
+  position: relative;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  background: #fff;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-height: 200px;
+  overflow-y: auto;
+  margin-top: 2px;
+}
+
+.dropdownOption {
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 0.875rem;
+}
+
+.dropdownOption:hover {
+  background: #f1f3f5;
+}
+
+.inputWithLoader {
+  position: relative;
+}
+
+.loader {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  border: 2px solid #dee2e6;
+  border-top-color: #228be6;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: translateY(-50%) rotate(360deg);
+  }
+}
+
+.button {
+  width: 100%;
+  padding: 10px 16px;
+  background: #228be6;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+
+.button:hover:not(:disabled) {
+  background: #1c7ed6;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.bookmarksSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.bookmarksTitle {
+  margin: 0;
+  font-size: 1.17em;
+}
+
+.bookmarksList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.bookmarkCard {
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 12px;
+  cursor: pointer;
+  background: #fff;
+  transition: background 0.15s;
+}
+
+.bookmarkCard:hover {
+  background: #f8f9fa;
+}
+
+.bookmarkRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 8px;
+}
+
+.bookmarkInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.bookmarkNameRow {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.bookmarkName {
+  font-weight: 600;
+  margin: 0;
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  background: #e7f5ff;
+  color: #228be6;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.bookmarkDate {
+  font-size: 0.875rem;
+  color: #868e96;
+  margin: 0;
+}
+
+.deleteButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 1rem;
+  color: #fa5252;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+
+.deleteButton:hover {
+  background: #fff5f5;
+}

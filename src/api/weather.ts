@@ -7,6 +7,13 @@ dayjs.extend(utc);
 
 const WEATHER_API = 'https://api.met.no/weatherapi/locationforecast/2.0/compact';
 
+/**
+ * Calculate wind chill using Environment Canada's formula.
+ * Applies when air temperature ≤ 10°C and wind speed > 4.8 km/h.
+ * @param tempC - Air temperature in degrees Celsius
+ * @param windSpeedMs - Wind speed in meters per second
+ * @returns Perceived temperature in degrees Celsius
+ */
 function calculateWindChill(tempC: number, windSpeedMs: number): number {
   const windKmh = windSpeedMs * 3.6;
   if (tempC <= 10 && windKmh > 4.8) {

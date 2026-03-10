@@ -61,15 +61,17 @@ function HomePage() {
     return () => clearTimeout(timer)
   }, [placeQuery])
 
+  function formatPlaceDisplay(place: GeocodingResult): string {
+    return place.name + (place.admin1 ? `, ${place.admin1}` : '') + `, ${place.country}`
+  }
+
   const autocompleteData = suggestions.map((s) => ({
-    value: s.name + (s.admin1 ? `, ${s.admin1}` : '') + `, ${s.country}`,
-    label: s.name + (s.admin1 ? `, ${s.admin1}` : '') + `, ${s.country}`,
+    value: formatPlaceDisplay(s),
+    label: formatPlaceDisplay(s),
   }))
 
   function handlePlaceSelect(value: string) {
-    const found = suggestions.find(
-      (s) => s.name + (s.admin1 ? `, ${s.admin1}` : '') + `, ${s.country}` === value
-    )
+    const found = suggestions.find((s) => formatPlaceDisplay(s) === value)
     if (found) {
       setSelectedPlace(found)
       setPlaceQuery(value)
@@ -132,11 +134,7 @@ function HomePage() {
               onChange={(val) => {
                 setPlaceQuery(val)
                 const matchesCurrent =
-                  selectedPlace &&
-                  val ===
-                    selectedPlace.name +
-                      (selectedPlace.admin1 ? `, ${selectedPlace.admin1}` : '') +
-                      `, ${selectedPlace.country}`
+                  selectedPlace && val === formatPlaceDisplay(selectedPlace)
                 if (!matchesCurrent) setSelectedPlace(null)
               }}
               onOptionSubmit={handlePlaceSelect}

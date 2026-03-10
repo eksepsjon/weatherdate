@@ -61,15 +61,17 @@ function HomePage() {
     return () => clearTimeout(timer)
   }, [placeQuery])
 
+  function formatPlaceDisplay(place: GeocodingResult): string {
+    return place.name + (place.admin1 ? `, ${place.admin1}` : '') + `, ${place.country}`
+  }
+
   const autocompleteData = suggestions.map((s) => ({
-    value: s.name + (s.admin1 ? `, ${s.admin1}` : '') + `, ${s.country}`,
-    label: s.name + (s.admin1 ? `, ${s.admin1}` : '') + `, ${s.country}`,
+    value: formatPlaceDisplay(s),
+    label: formatPlaceDisplay(s),
   }))
 
   function handlePlaceSelect(value: string) {
-    const found = suggestions.find(
-      (s) => s.name + (s.admin1 ? `, ${s.admin1}` : '') + `, ${s.country}` === value
-    )
+    const found = suggestions.find((s) => formatPlaceDisplay(s) === value)
     if (found) {
       setSelectedPlace(found)
       setPlaceQuery(value)
@@ -131,7 +133,9 @@ function HomePage() {
               value={placeQuery}
               onChange={(val) => {
                 setPlaceQuery(val)
-                if (val !== placeQuery) setSelectedPlace(null)
+                const matchesCurrent =
+                  selectedPlace && val === formatPlaceDisplay(selectedPlace)
+                if (!matchesCurrent) setSelectedPlace(null)
               }}
               onOptionSubmit={handlePlaceSelect}
               data={autocompleteData}
@@ -149,8 +153,8 @@ function HomePage() {
               value={eventTime}
               onChange={setEventTime}
               minDate={new Date()}
-              maxDate={dayjs().add(16, 'day').toDate()}
-              description="Open-Meteo provides forecasts up to 16 days ahead"
+              maxDate={dayjs().add(9, 'day').toDate()}
+              description="met.no provides forecasts up to 9 days ahead"
             />
 
             <TextInput

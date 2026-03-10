@@ -1,48 +1,70 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
-import type { WeatherResponse, WeatherSnapshot } from '../types/weather';
+import utc from 'dayjs/plugin/utc';
+import type { MetNoResponse, WeatherSnapshot } from '../types/weather';
 
-const WEATHER_API = 'https://api.open-meteo.com/v1/forecast';
+dayjs.extend(utc);
+
+const WEATHER_API = 'https://api.met.no/weatherapi/locationforecast/2.0/compact';
+
+/**
+ * Calculate wind chill using Environment Canada's formula.
+ * Applies when air temperature ≤ 10°C and wind speed > 4.8 km/h.
+ * @param tempC - Air temperature in degrees Celsius
+ * @param windSpeedMs - Wind speed in meters per second
+ * @returns Perceived temperature in degrees Celsius
+ */
+function calculateWindChill(tempC: number, windSpeedMs: number): number {
+  const windKmh = windSpeedMs * 3.6;
+  if (tempC <= 10 && windKmh > 4.8) {
+    return (
+      13.12 +
+      0.6215 * tempC -
+      11.37 * Math.pow(windKmh, 0.16) +
+      0.3965 * tempC * Math.pow(windKmh, 0.16)
+    );
+  }
+  return tempC;
+}
 
 export async function fetchWeather(
   lat: number,
   lon: number,
   isoTime: string
 ): Promise<WeatherSnapshot> {
-  const date = dayjs(isoTime).format('YYYY-MM-DD');
-
-  const response = await axios.get<WeatherResponse>(WEATHER_API, {
+  const response = await axios.get<MetNoResponse>(WEATHER_API, {
     params: {
-      latitude: lat,
-      longitude: lon,
-      hourly:
-        'temperature_2m,apparent_temperature,precipitation_probability,weathercode,windspeed_10m',
-      timezone: 'auto',
-      start_date: date,
-      end_date: date,
-      temperature_unit: 'celsius',
-      windspeed_unit: 'kmh',
+      lat: lat.toFixed(4),
+      lon: lon.toFixed(4),
+    },
+    headers: {
+      'User-Agent': 'weatherdate/1.0 github.com/eksepsjon/weatherdate',
     },
   });
 
-  const data = response.data;
-  const targetHour = dayjs(isoTime).format('YYYY-MM-DDTHH:00');
+  const timeseries = response.data.properties.timeseries;
+  const targetHour = dayjs(isoTime).utc().format('YYYY-MM-DDTHH:00:00Z');
 
-  const idx = data.hourly.time.findIndex((t) => t === targetHour);
-  if (idx < 0) {
+  const entry = timeseries.find((t) => t.time === targetHour);
+  if (!entry) {
     throw new Error(
-      `No hourly data found for ${targetHour}. The requested time may be outside the forecast range.`
+      `No forecast data found for ${dayjs(isoTime).format('YYYY-MM-DD HH:00')}. The requested time may be outside the forecast range (up to 9 days ahead).`
     );
   }
 
+  const details = entry.data.instant.details;
+  const period = entry.data.next_1_hours ?? entry.data.next_6_hours ?? entry.data.next_12_hours;
+  const symbolCode = period?.summary.symbol_code ?? 'cloudy';
+  const precipitationAmount = period?.details.precipitation_amount ?? 0;
+
   return {
-    time: data.hourly.time[idx],
-    temperature: data.hourly.temperature_2m[idx],
-    apparentTemperature: data.hourly.apparent_temperature[idx],
-    precipitationProbability: data.hourly.precipitation_probability[idx],
-    weatherCode: data.hourly.weathercode[idx],
-    windspeed: data.hourly.windspeed_10m[idx],
-    temperatureUnit: data.hourly_units.temperature_2m,
-    windspeedUnit: data.hourly_units.windspeed_10m,
+    time: entry.time,
+    temperature: details.air_temperature,
+    apparentTemperature: calculateWindChill(details.air_temperature, details.wind_speed),
+    precipitationAmount,
+    weatherSymbol: symbolCode,
+    windSpeed: details.wind_speed,
+    temperatureUnit: '°C',
+    windSpeedUnit: 'm/s',
   };
 }

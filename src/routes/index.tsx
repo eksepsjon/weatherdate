@@ -116,10 +116,11 @@ function HomePage() {
         <div className={styles.paper}>
           <div className={styles.formStack}>
             <div className={styles.fieldGroup}>
-              <label className={styles.label}>Place</label>
+              <label className={styles.label} htmlFor="place-input">Place</label>
               <div className={styles.autocompleteWrapper} ref={dropdownRef}>
                 <div className={styles.inputWithLoader}>
                   <input
+                    id="place-input"
                     type="text"
                     className={styles.input}
                     placeholder="Search for a city..."
@@ -160,8 +161,9 @@ function HomePage() {
             </div>
 
             <div className={styles.fieldGroup}>
-              <label className={styles.label}>Date &amp; Time</label>
+              <label className={styles.label} htmlFor="datetime-input">Date &amp; Time</label>
               <input
+                id="datetime-input"
                 type="datetime-local"
                 className={styles.input}
                 value={eventTime}
@@ -175,8 +177,9 @@ function HomePage() {
             </div>
 
             <div className={styles.fieldGroup}>
-              <label className={styles.label}>Event name (optional)</label>
+              <label className={styles.label} htmlFor="event-name-input">Event name (optional)</label>
               <input
+                id="event-name-input"
                 type="text"
                 className={styles.input}
                 placeholder="e.g. Birthday party, Garden wedding..."

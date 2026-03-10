@@ -1,0 +1,317 @@
+.container {
+  max-width: 600px;
+  margin: 2rem auto 0;
+  padding: 0 16px;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.headerSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.topBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.topBarActions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.backButton {
+  background: none;
+  border: none;
+  color: #228be6;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-family: inherit;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.backButton:hover {
+  background: #e7f5ff;
+}
+
+.copyButton {
+  background: #e7f5ff;
+  color: #228be6;
+  border: none;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+
+.copyButton:hover {
+  background: #d0ebff;
+}
+
+.bookmarkButton {
+  background: #fff9db;
+  border: none;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 1.125rem;
+  line-height: 1;
+  transition: background 0.15s;
+}
+
+.bookmarkButton:hover {
+  background: #fff3bf;
+}
+
+.bookmarkButtonActive {
+  background: #fcc419;
+  color: #fff;
+}
+
+.bookmarkButtonActive:hover {
+  background: #fab005;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 12px;
+  background: #e7f5ff;
+  color: #228be6;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  width: fit-content;
+}
+
+.dimmedText {
+  color: #868e96;
+  margin: 0;
+}
+
+.paper {
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  background: #fff;
+}
+
+.loadingBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.loader {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #dee2e6;
+  border-top-color: #228be6;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loadingText {
+  margin: 0;
+}
+
+.alert {
+  border: 1px solid #ffa8a8;
+  border-radius: 8px;
+  padding: 1rem;
+  background: #fff5f5;
+}
+
+.alertTitle {
+  color: #e03131;
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+}
+
+.alertStack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.alertText {
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.alertDimmed {
+  font-size: 0.875rem;
+  color: #868e96;
+  margin: 0;
+}
+
+.dataStack {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.weatherHero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.weatherEmoji {
+  font-size: 72px;
+  line-height: 1;
+}
+
+.weatherDetails {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.temperatureTitle {
+  margin: 0;
+  font-size: 2rem;
+}
+
+.feelsLike {
+  font-size: 1.25rem;
+  color: #868e96;
+  margin: 0;
+}
+
+.weatherBadge {
+  display: inline-block;
+  padding: 4px 16px;
+  background: #e7f5ff;
+  color: #228be6;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 500;
+  margin-top: 0.25rem;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.statCard {
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 1rem;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.statEmoji {
+  font-size: 32px;
+}
+
+.statValue {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.statLabel {
+  font-size: 0.875rem;
+  color: #868e96;
+  margin: 0;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid #dee2e6;
+  margin: 0;
+}
+
+.metaBox {
+  border-radius: 8px;
+  padding: 1rem;
+  background: #f8f9fa;
+}
+
+.metaStack {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.metaLabel {
+  font-size: 0.875rem;
+  color: #868e96;
+  margin: 0;
+}
+
+.metaValue {
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.metaAttribution {
+  font-size: 0.75rem;
+  color: #868e96;
+  margin: 0.25rem 0 0;
+}
+
+.metaAttribution a {
+  color: #228be6;
+}
+
+.secondaryButton {
+  width: 100%;
+  padding: 10px 16px;
+  background: #e7f5ff;
+  color: #228be6;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+
+.secondaryButton:hover {
+  background: #d0ebff;
+}

@@ -1,0 +1,35 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.header {
+  height: 56px;
+  border-bottom: 1px solid #dee2e6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  background: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.headerLink {
+  text-decoration: none;
+  color: #228be6;
+  font-size: 1.17em;
+  font-weight: 700;
+}
+
+.headerTagline {
+  font-size: 0.875rem;
+  color: #868e96;
+}
+
+.main {
+  flex: 1;
+  padding: 16px;
+}

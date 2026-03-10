@@ -1,29 +1,12 @@
 import { createFileRoute, useNavigate, Link } from '@tanstack/react-router'
 import { z } from 'zod'
 import { useQuery } from '@tanstack/react-query'
-import {
-  Container,
-  Title,
-  Text,
-  Paper,
-  Stack,
-  Group,
-  Button,
-  Badge,
-  Loader,
-  Alert,
-  Divider,
-  SimpleGrid,
-  Card,
-  ActionIcon,
-  Tooltip,
-  CopyButton,
-} from '@mantine/core'
 import dayjs from 'dayjs'
 import { fetchWeather } from '../api/weather'
 import { getWeatherDescription, getWeatherEmoji } from '../utils/weatherCodes'
 import { saveBookmark, deleteBookmark, getBookmarks, generateBookmarkId } from '../utils/bookmarks'
 import { useState } from 'react'
+import styles from './weather.module.css'
 
 const weatherSearchSchema = z.object({
   place: z.string(),
@@ -46,6 +29,7 @@ function WeatherPage() {
     () => new Set(getBookmarks().map((b) => b.id))
   )
   const isBookmarked = bookmarkIds.has(bookmarkId)
+  const [copied, setCopied] = useState(false)
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['weather', lat, lon, time],
@@ -76,141 +60,124 @@ function WeatherPage() {
     }
   }
 
-  const pageUrl = window.location.href
+  function handleCopy() {
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    })
+  }
+
   const formattedTime = dayjs(time).format('dddd, D MMMM YYYY [at] HH:mm')
   const displayName = name || place
 
   return (
-    <Container size="sm" mt="xl">
-      <Stack gap="xl">
-        <Stack gap="xs">
-          <Group justify="space-between" wrap="wrap">
-            <Button
-              variant="subtle"
-              size="sm"
-              component={Link}
-              to="/"
-            >
+    <div className={styles.container}>
+      <div className={styles.stack}>
+        <div className={styles.headerSection}>
+          <div className={styles.topBar}>
+            <Link to="/" className={styles.backButton}>
               ← Back
-            </Button>
-            <Group gap="xs">
-              <CopyButton value={pageUrl}>
-                {({ copied, copy }) => (
-                  <Tooltip label={copied ? 'Copied!' : 'Copy link'}>
-                    <Button variant="light" size="sm" onClick={copy}>
-                      {copied ? '✓ Copied' : '🔗 Copy link'}
-                    </Button>
-                  </Tooltip>
-                )}
-              </CopyButton>
-              <Tooltip label={isBookmarked ? 'Remove bookmark' : 'Save bookmark'}>
-                <ActionIcon
-                  size="lg"
-                  variant={isBookmarked ? 'filled' : 'light'}
-                  color="yellow"
-                  onClick={handleBookmark}
-                >
-                  {isBookmarked ? '★' : '☆'}
-                </ActionIcon>
-              </Tooltip>
-            </Group>
-          </Group>
+            </Link>
+            <div className={styles.topBarActions}>
+              <button
+                className={styles.copyButton}
+                onClick={handleCopy}
+                title={copied ? 'Copied!' : 'Copy link'}
+              >
+                {copied ? '✓ Copied' : '🔗 Copy link'}
+              </button>
+              <button
+                className={`${styles.bookmarkButton} ${isBookmarked ? styles.bookmarkButtonActive : ''}`}
+                onClick={handleBookmark}
+                title={isBookmarked ? 'Remove bookmark' : 'Save bookmark'}
+              >
+                {isBookmarked ? '★' : '☆'}
+              </button>
+            </div>
+          </div>
 
-          <Title order={2}>{displayName}</Title>
+          <h2 className={styles.title}>{displayName}</h2>
           {name && name !== place && (
-            <Badge variant="light" size="lg">
-              📍 {place}
-            </Badge>
+            <span className={styles.badge}>📍 {place}</span>
           )}
-          <Text c="dimmed">{formattedTime}</Text>
-        </Stack>
+          <p className={styles.dimmedText}>{formattedTime}</p>
+        </div>
 
         {isLoading && (
-          <Paper p="xl" withBorder radius="md">
-            <Stack align="center" gap="md">
-              <Loader size="lg" />
-              <Text>Fetching forecast...</Text>
-            </Stack>
-          </Paper>
+          <div className={styles.paper}>
+            <div className={styles.loadingBox}>
+              <div className={styles.loader} />
+              <p className={styles.loadingText}>Fetching forecast...</p>
+            </div>
+          </div>
         )}
 
         {error && (
-          <Alert color="red" title="Failed to load weather">
-            <Stack gap="sm">
-              <Text size="sm">
+          <div className={styles.alert}>
+            <p className={styles.alertTitle}>Failed to load weather</p>
+            <div className={styles.alertStack}>
+              <p className={styles.alertText}>
                 {error instanceof Error ? error.message : 'An error occurred while fetching weather data.'}
-              </Text>
-              <Text size="sm" c="dimmed">
+              </p>
+              <p className={styles.alertDimmed}>
                 Note: met.no provides forecasts for up to 9 days ahead.
                 Please check your date is within range.
-              </Text>
-            </Stack>
-          </Alert>
+              </p>
+            </div>
+          </div>
         )}
 
         {data && (
-          <Stack gap="md">
-            <Paper shadow="sm" p="xl" radius="md" withBorder>
-              <Stack gap="md" align="center">
-                <Text fz={72} lh={1}>
+          <div className={styles.dataStack}>
+            <div className={styles.paper}>
+              <div className={styles.weatherHero}>
+                <span className={styles.weatherEmoji}>
                   {getWeatherEmoji(data.weatherSymbol)}
-                </Text>
-                <Stack gap={4} align="center">
-                  <Title order={1}>
+                </span>
+                <div className={styles.weatherDetails}>
+                  <h1 className={styles.temperatureTitle}>
                     {data.temperature.toFixed(1)}{data.temperatureUnit}
-                  </Title>
-                  <Text size="xl" c="dimmed">
+                  </h1>
+                  <p className={styles.feelsLike}>
                     Feels like {data.apparentTemperature.toFixed(1)}{data.temperatureUnit}
-                  </Text>
-                  <Badge size="xl" variant="light" mt="xs">
+                  </p>
+                  <span className={styles.weatherBadge}>
                     {getWeatherDescription(data.weatherSymbol)}
-                  </Badge>
-                </Stack>
-              </Stack>
-            </Paper>
+                  </span>
+                </div>
+              </div>
+            </div>
 
-            <SimpleGrid cols={2} spacing="md">
-              <Card withBorder radius="md" padding="md">
-                <Stack gap={4} align="center">
-                  <Text fz={32}>💧</Text>
-                  <Title order={4}>{data.precipitationAmount} mm</Title>
-                  <Text size="sm" c="dimmed">
-                    Precipitation
-                  </Text>
-                </Stack>
-              </Card>
-              <Card withBorder radius="md" padding="md">
-                <Stack gap={4} align="center">
-                  <Text fz={32}>💨</Text>
-                  <Title order={4}>
-                    {data.windSpeed.toFixed(1)} {data.windSpeedUnit}
-                  </Title>
-                  <Text size="sm" c="dimmed">
-                    Wind speed
-                  </Text>
-                </Stack>
-              </Card>
-            </SimpleGrid>
+            <div className={styles.statsGrid}>
+              <div className={styles.statCard}>
+                <span className={styles.statEmoji}>💧</span>
+                <h4 className={styles.statValue}>{data.precipitationAmount} mm</h4>
+                <p className={styles.statLabel}>Precipitation</p>
+              </div>
+              <div className={styles.statCard}>
+                <span className={styles.statEmoji}>💨</span>
+                <h4 className={styles.statValue}>
+                  {data.windSpeed.toFixed(1)} {data.windSpeedUnit}
+                </h4>
+                <p className={styles.statLabel}>Wind speed</p>
+              </div>
+            </div>
 
-            <Divider />
+            <hr className={styles.divider} />
 
-            <Paper p="md" radius="md" bg="gray.0">
-              <Stack gap={4}>
-                <Group gap="xs">
-                  <Text size="sm" c="dimmed">
-                    📍 Coordinates:
-                  </Text>
-                  <Text size="sm">
+            <div className={styles.metaBox}>
+              <div className={styles.metaStack}>
+                <div className={styles.metaRow}>
+                  <p className={styles.metaLabel}>📍 Coordinates:</p>
+                  <p className={styles.metaValue}>
                     {lat.toFixed(4)}, {lon.toFixed(4)}
-                  </Text>
-                </Group>
-                <Group gap="xs">
-                  <Text size="sm" c="dimmed">
-                    🕐 Forecast time:
-                  </Text>
-                  <Text size="sm">{dayjs(data.time).format('D MMM YYYY, HH:mm')}</Text>
-                </Group>
-                <Text size="xs" c="dimmed" mt="xs">
+                  </p>
+                </div>
+                <div className={styles.metaRow}>
+                  <p className={styles.metaLabel}>🕐 Forecast time:</p>
+                  <p className={styles.metaValue}>{dayjs(data.time).format('D MMM YYYY, HH:mm')}</p>
+                </div>
+                <p className={styles.metaAttribution}>
                   Data from{' '}
                   <a
                     href="https://www.met.no/"
@@ -220,24 +187,23 @@ function WeatherPage() {
                     met.no
                   </a>{' '}
                   · Norwegian Meteorological Institute
-                </Text>
-              </Stack>
-            </Paper>
+                </p>
+              </div>
+            </div>
 
-            <Button
-              variant="light"
+            <button
+              className={styles.secondaryButton}
               onClick={() =>
                 navigate({
                   to: '/',
                 })
               }
-              fullWidth
             >
               Check another date or place
-            </Button>
-          </Stack>
+            </button>
+          </div>
         )}
-      </Stack>
-    </Container>
+      </div>
+    </div>
   )
 }

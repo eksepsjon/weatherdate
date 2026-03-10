@@ -1,7 +1,7 @@
 import { createRootRoute, Outlet } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
-import { AppShell, Group, Title, Anchor, Text } from '@mantine/core'
 import { Link } from '@tanstack/react-router'
+import styles from './__root.module.css'
 
 export const Route = createRootRoute({
   component: RootLayout,
@@ -9,23 +9,19 @@ export const Route = createRootRoute({
 
 function RootLayout() {
   return (
-    <AppShell header={{ height: 56 }} padding="md">
-      <AppShell.Header>
-        <Group h="100%" px="md" justify="space-between">
-          <Anchor component={Link} to="/" underline="never">
-            <Title order={3} c="blue">
-              🌤️ WeatherDate
-            </Title>
-          </Anchor>
-          <Text size="sm" c="dimmed">
-            Check the forecast for your event
-          </Text>
-        </Group>
-      </AppShell.Header>
-      <AppShell.Main>
+    <div className={styles.layout}>
+      <header className={styles.header}>
+        <Link to="/" className={styles.headerLink}>
+          🌤️ WeatherDate
+        </Link>
+        <span className={styles.headerTagline}>
+          Check the forecast for your event
+        </span>
+      </header>
+      <main className={styles.main}>
         <Outlet />
-      </AppShell.Main>
+      </main>
       {import.meta.env.DEV && <TanStackRouterDevtools />}
-    </AppShell>
+    </div>
   )
 }
